@@ -54,29 +54,15 @@ function addTask() {  // Add task when Submit is clicked
 
     document.getElementById("task").value = "";
     //console.log(close.length);
-    index += 1;
+    //index += 1;
     printIndex();
 }
 
+//HOW TO GET VALUE OF APPENDED CLASS NAME 
 function printIndex() {
-    console.log(index);
-    let i = 0;
-
-    //const div = document.querySelector('span');
-    //console.log(div.classList.contains('close'));
-
-    console.log(close[0].value);
-    /*while(i < index.length) {
-        close[index].onclick = () => {
-            let div = this.parentElement;
-            div.style.display = "none";
-        }
-    }*/
-
+    const collection = document.getElementsByClassName("close");
+    console.log(collection.length);
 }
-
-HOW TO GET VALUE OF APPENDED CLASS NAME 
-
 
 
 
