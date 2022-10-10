@@ -11,8 +11,8 @@ UPDATE:
     2. Double click text
 DELETE:
     1. Create an icon beside the task - DONE
-    2. A modal that will show the:
-        a. Double-verification, to make sure that the user wants to delete the item
+    2. A modal that will show the: - 1/2
+        a. Double-verification, to make sure that the user wants to delete the item - DONE
         b. Task was deleted
 STRIKE:
     A checkbox button that will strike the text once completed. When the button was clicked when the text was striked, unstrike the text
@@ -25,12 +25,13 @@ STRIKE:
 let task = document.getElementById("task");
 let submitButton = document.getElementById("submitButton");
 let taskArea = document.getElementById("taskArea");
-let index = 0;
-//let close = document.getElementsByClassName("close");
+let closeIcon = document.getElementsByClassName("close");
+let editIcon = document.getElementsByClassName("edit");
+let modal = document.getElementById("deleteModal");
 
 task.addEventListener("keypress", (event) => {  // Add task when Enter key is pressed
     if(event.key === "Enter") { 
-        addTask();
+        addTask();  // Add condition here
     }
 });
 
@@ -41,10 +42,12 @@ function addTask() {  // Add task when Submit is clicked
     const checkbox = document.createElement("input");
     checkbox.type = "checkbox";
     const closeButton = document.createElement("SPAN");
-    closeButton.classList.add("bi", "bi-trash3", "ms-3", "close");
+    closeButton.classList.add("close", "bi", "bi-trash3", "ms-3");
     const editButton = document.createElement("SPAN");
     editButton.classList.add("bi", "bi-pencil", "edit");
     const text = document.createTextNode(task);
+
+    let editIcon = document.getElementsByClassName("edit");
 
     newTask.appendChild(checkbox);
     newTask.appendChild(text);
@@ -52,43 +55,20 @@ function addTask() {  // Add task when Submit is clicked
     newTask.appendChild(editButton);
     taskArea.appendChild(newTask);
 
-    document.getElementById("task").value = "";
-    //console.log(close.length);
-    //index += 1;
-    printIndex();
-}
+    for (i = 0; i < closeIcon.length; i++) {  // Do not use Arrow Function
+        closeIcon[i].onclick = function() {
+            modal.style.display = "block";
+            //let div = this.parentElement;
+            //div.style.display = "none";
+        }
 
-//HOW TO GET VALUE OF APPENDED CLASS NAME 
-function printIndex() {
-    const collection = document.getElementsByClassName("close");
-    console.log(collection.length);
-}
+        /*editIcon[i].onclick = function() {
+            let div = this.parentElement;
+            div.style.display = "none";
+        }*/
 
-
-
-
-
-/*
-while(index < close.length) {
-    close[index].onclick = () => {
-        let div = this.parentElement;
-        div.style.display = "none";
     }
-    index+=1;
-}*/
+    
+    document.getElementById("task").value = "";  
 
-/*
-const pseudoTaskList = document.getElementsByTagName("LI");
-index = 0;
-
-while(index < pseudoTaskList.length) {
-    const closeButton = document.createElement("SPAN");
-    const closes = document.createTextNode("\u00D7");
-    closeButton.className = "close";
-    closeButton.appendChild(closes);
-    pseudoTaskList[index].appendChild(closeButton);
-}*/
-
-
-
-
+}
