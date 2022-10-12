@@ -27,7 +27,7 @@ let submitButton = document.getElementById("submitButton");
 let taskArea = document.getElementById("taskArea");
 let closeIcon = document.getElementsByClassName("close");
 let editIcon = document.getElementsByClassName("edit");
-let modal = document.getElementById("deleteModal");
+//let modal = document.getElementById("deleteModal");
 
 task.addEventListener("keypress", (event) => {  // Add task when Enter key is pressed
     if(event.key === "Enter") { 
@@ -57,7 +57,7 @@ function addTask() {  // Add task when Submit is clicked
 
     for (i = 0; i < closeIcon.length; i++) {  // Do not use Arrow Function
         closeIcon[i].onclick = function() {
-            modal.style.display = "block";
+            //modal.style.display = "block";
             //let div = this.parentElement;
             //div.style.display = "none";
         }
