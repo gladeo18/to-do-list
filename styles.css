@@ -7,8 +7,12 @@ input[type=text], #submitButton {
     height: 45px;
 }
 
-input[type=text] {
+#task {
     width: 40%;
+}
+
+.inputTask {
+    width: 90%;
 }
 
 #submitButton {
@@ -35,4 +39,32 @@ span {
     float: right;
 }
 
+.deleteModal, .editModal {
+    display: none;
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(77,77,77,0.3);
+}
 
+.content {
+    text-align: center;
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 40px;
+    border-radius: 5px;
+    width: 30%;
+}
+
+.delButtons {
+    width: 20%;
+    margin: 5px;
+}
+
+.strikeText {
+    text-decoration: line-through;
+    color: #339933;
+}

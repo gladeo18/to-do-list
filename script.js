@@ -6,15 +6,16 @@ CREATE: DONE
         a. THIS WILL ONLY WORK WITH JQUERY. Tried hiding Parent Element instead.
 READ: DONE
     Show task to the <div> allocated
-UPDATE:  
+UPDATE:  (3/3)
     1. Create an icon beside the task - DONE
-    2. Double click text
-DELETE:
+    2. A modal that will let you edit the text - DONE
+    2. Double click text - DONE
+DELETE: DONE
     1. Create an icon beside the task - DONE
-    2. A modal that will show the:
-        a. Double-verification, to make sure that the user wants to delete the item
-        b. Task was deleted
-STRIKE:
+    2. A modal that will show the: - 2/2
+        a. Double-verification, to make sure that the user wants to delete the item - DONE
+        b. Task was deleted - DONE
+STRIKE: DONE
     A checkbox button that will strike the text once completed. When the button was clicked when the text was striked, unstrike the text
 
 ------------- END -------------
@@ -25,70 +26,93 @@ STRIKE:
 let task = document.getElementById("task");
 let submitButton = document.getElementById("submitButton");
 let taskArea = document.getElementById("taskArea");
-let index = 0;
-//let close = document.getElementsByClassName("close");
+let closeIcon = document.getElementsByClassName("close");
+let checkboxIcon = document.getElementsByClassName("checkbox");
+let editIcon = document.getElementsByClassName("edit");
+let deleteModal = document.getElementById("deleteModal");
+let editModal = document.getElementById("editModal");
 
 task.addEventListener("keypress", (event) => {  // Add task when Enter key is pressed
     if(event.key === "Enter") { 
-        addTask();
+        task = document.getElementById("task").value;
+        if(!task) { alert( "Please enter a task!"); }
+        else if(task) { addTask(); }
     }
 });
 
 function addTask() {  // Add task when Submit is clicked
     task = document.getElementById("task").value;
 
-    const newTask = document.createElement("li");
-    const checkbox = document.createElement("input");
-    checkbox.type = "checkbox";
-    const closeButton = document.createElement("SPAN");
-    closeButton.classList.add("bi", "bi-trash3", "ms-3", "close");
-    const editButton = document.createElement("SPAN");
-    editButton.classList.add("bi", "bi-pencil", "edit");
-    const text = document.createTextNode(task);
+    if(!task) { alert("Please enter a task!"); }
+    else if(task) {
+        const newTask = document.createElement("li");
+        const checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        checkbox.className = "checkbox";
+        const closeButton = document.createElement("SPAN");
+        closeButton.classList.add("close", "bi", "bi-trash3", "ms-3");
+        const editButton = document.createElement("SPAN");
+        editButton.classList.add("bi", "bi-pencil", "edit");
+        const text = document.createTextNode(task);
+    
+        newTask.appendChild(checkbox);
+        newTask.appendChild(text);
+        newTask.appendChild(closeButton);
+        newTask.appendChild(editButton);
+        taskArea.appendChild(newTask);
 
-    newTask.appendChild(checkbox);
-    newTask.appendChild(text);
-    newTask.appendChild(closeButton);
-    newTask.appendChild(editButton);
-    taskArea.appendChild(newTask);
+        for (i = 0; i < closeIcon.length; i++) {  // Delete a task
+            closeIcon[i].onclick = function() {
+                console.log(this.parentElement.childNodes[i]);
+                deleteModal.style.display = "block";
+                let div = this.parentElement;
+                modals(div);
+            }
 
-    document.getElementById("task").value = "";
-    //console.log(close.length);
-    //index += 1;
-    printIndex();
-}
+            checkboxIcon[i].onclick = function() {  // Strike or unstrike the task
+                let div = this.parentElement;
+                if(this.checked) { div.className = "strikeText"; }
+                else { div.classList.remove("strikeText"); }
+            }
 
-//HOW TO GET VALUE OF APPENDED CLASS NAME 
-function printIndex() {
-    const collection = document.getElementsByClassName("close");
-    console.log(collection.length);
-}
+            editIcon[i].onclick = function() {  // Edit task
+                let inputTask = document.getElementById("inputTask");
+                div = this.parentElement;
+                textValue = div.childNodes[1].nodeValue;
+                inputTask.value = textValue;
+                editModal.style.display = "block";
+                modals(div);
 
+                document.getElementById("editTask").addEventListener("click", function(){
+                    editModal.style.display = "none";
+                    newInputTask = document.getElementById("inputTask").value;
+                    div.childNodes[1].nodeValue = newInputTask;
+                });
+            }
 
+            newTask.onclick = function() {  // Double Click text to edit
+                console.log(this.childNodes[1].nodeValue);  // Stuck at edting the text when clicked  <--------------------
+            }
 
+        }
 
+        document.getElementById("task").value = "";  
 
-/*
-while(index < close.length) {
-    close[index].onclick = () => {
-        let div = this.parentElement;
-        div.style.display = "none";
     }
-    index+=1;
-}*/
+}
 
-/*
-const pseudoTaskList = document.getElementsByTagName("LI");
-index = 0;
+function modals(param) {  // Hiding modals whilst performing actions
 
-while(index < pseudoTaskList.length) {
-    const closeButton = document.createElement("SPAN");
-    const closes = document.createTextNode("\u00D7");
-    closeButton.className = "close";
-    closeButton.appendChild(closes);
-    pseudoTaskList[index].appendChild(closeButton);
-}*/
+    document.getElementById("deleteTask").addEventListener("click", function(){
+        deleteModal.style.display = "none";
+        param.style.display = "none";  
+    });
 
+    document.getElementById("undoTask").addEventListener("click", function(){
+        deleteModal.style.display = "none";
+    });
 
-
-
+    document.getElementById("sameTask").addEventListener("click", function(){
+        editModal.style.display = "none";
+    });
+}
