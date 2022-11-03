@@ -89,8 +89,6 @@ function addTask() {  // Add task when Submit was clicked
 
         }
 
-        //if(isFocused) { document.activeElement.blur(); }
-
         document.getElementById("task").value = "";  
 
     }
