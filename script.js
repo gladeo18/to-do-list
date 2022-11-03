@@ -1,26 +1,3 @@
-/*
------- FUNCTIONALITIES -------
-
-CREATE: DONE
-    Minette's idea - every task has a unique id, an index that will increment everytime a task was created  (or try an array!)
-        a. THIS WILL ONLY WORK WITH JQUERY. Tried hiding Parent Element instead.
-READ: DONE
-    Show task to the <div> allocated
-UPDATE:  (3/3)
-    1. Create an icon beside the task - DONE
-    2. A modal that will let you edit the text - DONE
-    2. Double click text - DONE
-DELETE: DONE
-    1. Create an icon beside the task - DONE
-    2. A modal that will show the: - 2/2
-        a. Double-verification, to make sure that the user wants to delete the item - DONE
-        b. Task was deleted - DONE
-STRIKE: DONE
-    A checkbox button that will strike the text once completed. When the button was clicked when the text was striked, unstrike the text
-
-------------- END -------------
-*/
-
 `use strict`;
 
 let task = document.getElementById("task");
@@ -32,7 +9,7 @@ let editIcon = document.getElementsByClassName("edit");
 let deleteModal = document.getElementById("deleteModal");
 let editModal = document.getElementById("editModal");
 
-task.addEventListener("keypress", (event) => {  // Add task when Enter key is pressed
+task.addEventListener("keypress", (event) => {  // Add task when Enter key was pressed
     if(event.key === "Enter") { 
         task = document.getElementById("task").value;
         if(!task) { alert( "Please enter a task!"); }
@@ -40,7 +17,7 @@ task.addEventListener("keypress", (event) => {  // Add task when Enter key is pr
     }
 });
 
-function addTask() {  // Add task when Submit is clicked
+function addTask() {  // Add task when Submit was clicked
     task = document.getElementById("task").value;
 
     if(!task) { alert("Please enter a task!"); }
@@ -49,6 +26,8 @@ function addTask() {  // Add task when Submit is clicked
         const checkbox = document.createElement("input");
         checkbox.type = "checkbox";
         checkbox.className = "checkbox";
+        const checkboxLabel = document.createElement("label");
+        checkboxLabel.contentEditable = "true";
         const closeButton = document.createElement("SPAN");
         closeButton.classList.add("close", "bi", "bi-trash3", "ms-3");
         const editButton = document.createElement("SPAN");
@@ -56,7 +35,8 @@ function addTask() {  // Add task when Submit is clicked
         const text = document.createTextNode(task);
     
         newTask.appendChild(checkbox);
-        newTask.appendChild(text);
+        checkboxLabel.appendChild(text);
+        newTask.appendChild(checkboxLabel);
         newTask.appendChild(closeButton);
         newTask.appendChild(editButton);
         taskArea.appendChild(newTask);
@@ -66,13 +46,24 @@ function addTask() {  // Add task when Submit is clicked
                 console.log(this.parentElement.childNodes[i]);
                 deleteModal.style.display = "block";
                 let div = this.parentElement;
-                modals(div);
+                modals();
+
+                document.getElementById("deleteTask").addEventListener("click", function(){
+                    deleteModal.style.display = "none";
+                    div.style.display = "none";  
+                });
             }
 
             checkboxIcon[i].onclick = function() {  // Strike or unstrike the task
                 let div = this.parentElement;
-                if(this.checked) { div.className = "strikeText"; }
-                else { div.classList.remove("strikeText"); }
+                if(this.checked) { 
+                    div.childNodes[1].className = "strikeText"; 
+                    div.style.opacity = 0.5;
+                }
+                else { 
+                    div.childNodes[1].classList.remove("strikeText");
+                    div.style.opacity = 1;
+                }
             }
 
             editIcon[i].onclick = function() {  // Edit task
@@ -81,32 +72,31 @@ function addTask() {  // Add task when Submit is clicked
                 textValue = div.childNodes[1].nodeValue;
                 inputTask.value = textValue;
                 editModal.style.display = "block";
-                modals(div);
+                modals();
 
-                document.getElementById("editTask").addEventListener("click", function(){
+                document.getElementById("editTask").addEventListener("click", function() {
                     editModal.style.display = "none";
                     newInputTask = document.getElementById("inputTask").value;
-                    div.childNodes[1].nodeValue = newInputTask;
+                    div.childNodes[1].textContent = newInputTask;
                 });
             }
 
-            newTask.onclick = function() {  // Double Click text to edit
-                console.log(this.childNodes[1].nodeValue);  // Stuck at edting the text when clicked  <--------------------
-            }
+            checkboxLabel.addEventListener(("keypress"), (event) => {  // Unfocus text
+                if(event.key === "Enter") {
+                    document.activeElement.blur();
+                }
+            });
 
         }
+
+        //if(isFocused) { document.activeElement.blur(); }
 
         document.getElementById("task").value = "";  
 
     }
 }
 
-function modals(param) {  // Hiding modals whilst performing actions
-
-    document.getElementById("deleteTask").addEventListener("click", function(){
-        deleteModal.style.display = "none";
-        param.style.display = "none";  
-    });
+function modals() {  // Hiding modals when button was clicked
 
     document.getElementById("undoTask").addEventListener("click", function(){
         deleteModal.style.display = "none";
