@@ -1,6 +1,6 @@
 -------------------------------------------------------------------------------------------------------
 
-Hello there! I see that you downloaded this app :-)
+Hello there! I see that you're currently viewing this project :-)
 
 Here are the following functionalities of this app for your own reference:
 
